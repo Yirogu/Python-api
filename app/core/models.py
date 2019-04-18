@@ -7,11 +7,16 @@ class UserManager(BaseUserManager):
 
     def create_user(self, email, password=None, **extra_fields):
         """Creates and save new users"""
+        if not email:
+            raise ValueError('Users must have email adress')
         user = self.model(email=self.normalize_email(email), **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
 
         return user
+
+    def create_superuser(self,email,password=None):
+        
 
 
 class User(AbstractBaseUser, PermissionsMixin):
